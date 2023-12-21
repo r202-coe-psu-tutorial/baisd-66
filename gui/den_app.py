@@ -7,10 +7,17 @@ from kivy.uix.textinput import TextInput
 
 import random
 
-class Box(Button):
-    def hit_box(self):
-        print('hit box')
 
+class Box(Button):
+    def __init__(self, *args, **kwargs):
+        self.callback = kwargs.pop("callback")
+        self.is_snake = kwargs.pop("is_snake")
+        super().__init__(*args, **kwargs)
+
+    def hit_box(self):
+        print("hit box")
+        self.disabled = True
+        self.callback(self.is_snake)
 
 
 class Container(BoxLayout):
@@ -26,36 +33,44 @@ class Container(BoxLayout):
     def fill_box(self):
         snake_counter = 0
         while snake_counter < self.snake_num:
-            row = random.randint(0, self.rows-1)
-            col = random.randint(0, self.cols-1)
+            row = random.randint(0, self.rows - 1)
+            col = random.randint(0, self.cols - 1)
 
             location = (row, col)
             if location not in self.snake_locations:
                 self.snake_locations.append(location)
                 snake_counter += 1
-        
 
         for i in range(self.rows):
             for j in range(self.cols):
                 location = (i, j)
-                if location  in self.snake_locations:
-                    
-                    self.ids.grid.add_widget(Box(text='S'))
+                if location in self.snake_locations:
+                    self.ids.grid.add_widget(
+                        Box(text="S", callback=self.hit_score, is_snake=True)
+                    )
                 else:
-                    self.ids.grid.add_widget(Box())
+                    self.ids.grid.add_widget(
+                        Box(callback=self.hit_score, is_snake=False)
+                    )
 
-    def display_name(self, name):
-        self.score += 1
-        print('dn:', name, self.score)
+    def hit_score(self, is_snake=False):
+        if is_snake:
+            self.score += 3
+        else:
+            self.score -= 1
+        self.display_name()
 
-        self.ids.display_label.text = f'Hello {name} -> {self.score}'
+    def display_name(self):
+        if self.score < self.snake_num:
+            self.ids.display_label.text = f"Your score: {self.score}"
+        else:
+            self.ids.display_label.text = f"Your win, score: {self.score}"
 
 
 class DenSeekSnakeApp(App):
     def build(self):
         return Container()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     DenSeekSnakeApp().run()
-       
-   
