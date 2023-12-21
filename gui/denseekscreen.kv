@@ -1,0 +1,27 @@
+<Box>:
+  font_size: "20sp"
+  on_press: root.hit_box()
+  background_normal: "images/box.png"
+
+<Container>:
+  orientation: 'vertical' 
+  GridLayout:
+    id: grid
+    cols: 3
+  Label:
+    id: display_label
+    text: "Score: "
+    font_size: "30sp"
+    size_hint: (None, None)
+
+<Menu>:
+  orientation: 'vertical'
+  Button:
+    text: "Easy"
+    on_press: root.manager.current = 'Easy Game'
+  Button:
+    text: "Intermediate"
+    on_press: root.manager.current = 'Intermediate Game'
+  Button:
+    text: "Advance"
+    on_press: root.manager.current = 'Advance Game'
