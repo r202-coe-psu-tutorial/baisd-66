@@ -46,7 +46,7 @@ class Container(BoxLayout):
                 location = (i, j)
                 if location in self.snake_locations:
                     self.ids.grid.add_widget(
-                        Box(text="S", callback=self.hit_score, is_snake=True)
+                        Box(callback=self.hit_score, is_snake=True)
                     )
                 else:
                     self.ids.grid.add_widget(
