@@ -4,6 +4,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
+from kivy.uix.popup import Popup
 
 import random
 
@@ -29,6 +30,12 @@ class Container(BoxLayout):
         self.snake_num = 3
         self.snake_locations = []
         self.fill_box()
+        self.fail_popup = Popup(
+            title="You fail",
+            content=Label(text="Your score less than 0"),
+            size_hint=(None, None),
+            size=(400, 400),
+        )
 
     def fill_box(self):
         snake_counter = 0
@@ -46,7 +53,11 @@ class Container(BoxLayout):
                 location = (i, j)
                 if location in self.snake_locations:
                     self.ids.grid.add_widget(
-                        Box(callback=self.hit_score, is_snake=True)
+                        Box(
+                            callback=self.hit_score,
+                            is_snake=True,
+                            background_disabled_normal="images/snake.png",
+                        )
                     )
                 else:
                     self.ids.grid.add_widget(
@@ -59,6 +70,9 @@ class Container(BoxLayout):
         else:
             self.score -= 1
         self.display_name()
+
+        if self.score < -3:
+            self.fail_popup.open()
 
     def display_name(self):
         if self.score < self.snake_num:
