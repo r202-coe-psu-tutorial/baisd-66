@@ -1,0 +1,15 @@
+{% extends "base.html.j2" %}
+
+{% block content %}
+<h1>Write the message</h1>
+<form method="POST" action="{{ url_for('save') }}">
+  <div class="mb-3">
+    <label for="message" class="form-label">Message</label>
+    <input type="email" class="form-control" id="message" aria-describedby="message-help">
+    <div id="meaage-help" class="form-text">Write the story</div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}

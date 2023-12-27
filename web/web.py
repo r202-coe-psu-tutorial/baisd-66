@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("index.html", name=request.args.get("name"))
+    return render_template("index.html.j2", name=request.args.get("name"))
 
 
 @app.route("/me")
@@ -16,7 +16,7 @@ def me():
 @app.route("/write")
 def write():
     print("write -->", request.form)
-    return render_template("write.html")
+    return render_template("write.html.j2")
 
 
 @app.route("/save", methods=["POST"])
