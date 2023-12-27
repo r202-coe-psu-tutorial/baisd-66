@@ -1,1 +1,14 @@
 {% extends "base.html.j2" %}
+
+{% block content %}
+
+{% for message in messages %}
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{ message.message }}</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary">{{ message.created_date }}</h6>
+        {# <p class="card-text">{{ message.message }} </p> #}
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

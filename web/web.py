@@ -17,6 +17,8 @@ db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
 
+
+
 class User(db.Model):
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
     username: Mapped[str] = mapped_column(db.String, unique=True, nullable=False)
@@ -29,18 +31,17 @@ class Group(db.Model):
 class Message(db.Model):
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
     message: Mapped[str] = mapped_column(db.String)
-
-
-
-
-
+    created_date: Mapped[datetime.datetime] = mapped_column(db.DateTime)
 
 with app.app_context():
     db.create_all()
 
 @app.route("/")
 def index():
-    return render_template("index.html.j2", name=request.args.get("name"))
+
+    messages = db.session.execute(db.select(Message)).scalars()
+
+    return render_template("index.html.j2", messages=messages)
 
 
 @app.route("/me")
@@ -50,11 +51,16 @@ def me():
 
 @app.route("/write")
 def write():
-    print("write -->", request.form)
     return render_template("write.html.j2")
 
 
 @app.route("/save", methods=["POST"])
 def save():
-    print("save -->", request.form)
-    return redirect(url_for("index", name=request.form.get("message", "No message")))
+    # create model
+    message = Message()
+    message.message = request.form.get('message', 'No message')
+    message.created_date = datetime.datetime.now()
+    # save model
+    db.session.add(message)
+    db.session.commit()
+    return redirect(url_for("index"))
