@@ -36,6 +36,11 @@
                     <li class="nav-item">
                         <a href="{{ url_for('write') }}" class="nav-link active">Write</a>
                     </li>
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{{ url_for('logout') }}" class="nav-link active">Logout</a>
+                    </li>
+                    {% endif %}
                 </ul>
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

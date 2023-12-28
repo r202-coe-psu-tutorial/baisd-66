@@ -7,7 +7,7 @@
     <div class="card-body">
         <h5 class="card-title">{{ message.message }}</h5>
         <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-clock"></i> {{ message.created_date }}</h6>
-        <p class="card-text">ip: {{ message.ip_address }} </p>
+        <p class="card-text">ip: {{ message.ip_address }} user: {{ message.post_by.id }}</p>
     </div>
 </div>
 {% endfor %}

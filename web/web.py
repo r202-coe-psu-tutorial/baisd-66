@@ -2,7 +2,8 @@ from flask import Flask, render_template, redirect, url_for, request
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import ForeignKey
 
 import datetime
 
@@ -63,7 +64,7 @@ db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
 
-from flask_login import LoginManager, login_required, logout_user, login_user, UserMixin
+from flask_login import LoginManager, login_required, logout_user, login_user, UserMixin, current_user
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -91,6 +92,9 @@ class Message(db.Model):
     message: Mapped[str] = mapped_column(db.String)
     ip_address: Mapped[str] = mapped_column(db.String)
     created_date: Mapped[datetime.datetime] = mapped_column(db.DateTime)
+    post_by_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
+    
+    post_by: Mapped["User"] = relationship()
 
 
 with app.app_context():
@@ -177,6 +181,7 @@ def save():
     message.message = request.form.get("message", "No message")
     message.created_date = datetime.datetime.now()
     message.ip_address = request.environ["REMOTE_ADDR"]
+    message.post_by_id = current_user.id
     # save model
     db.session.add(message)
     db.session.commit()
