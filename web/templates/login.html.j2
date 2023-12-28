@@ -1,0 +1,26 @@
+{% extends "base.html.j2" %}
+
+{% block content %}
+<h1>Login</h1>
+{% if request.args.get('error') %}
+<div class="alert alert-danger" role="alert">
+  {{ request.args.get('error') }}
+</div>
+{% endif %}
+<form method="POST">
+  {{ form.hidden_tag() }}
+  <div class="mb-3">
+    {{ form.username.label(class_="form-label") }}
+    {{ form.username(class_="form-control") }}
+  </div>
+  <div class="mb-3">
+    {{ form.password.label(class_="form-label") }}
+    {{ form.password(class_="form-control") }}
+  </div>
+
+
+  <button type="submit" class="btn btn-primary">Login</button>
+  <a href="{{ url_for('register') }}" class="btn btn-primary">Register</a>
+</form>
+
+{% endblock %}
