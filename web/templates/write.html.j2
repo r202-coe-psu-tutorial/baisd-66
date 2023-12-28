@@ -3,9 +3,12 @@
 {% block content %}
 <h1>Write the message</h1>
 <form method="POST" action="{{ url_for('save') }}">
+  {{ form.hidden_tag() }}
   <div class="mb-3">
-    <label for="message" class="form-label">Message</label>
-    <input type="text" name="message" class="form-control" id="message" aria-describedby="message-help">
+    {# <label for="message" class="form-label">Message</label>
+    <input type="text" name="message" class="form-control" id="message" aria-describedby="message-help"> #}
+    {{ form.message.label(class_="form-label") }}
+    {{ form.message(class_="form-control") }}
     <div id="meaage-help" class="form-text">Write the story</div>
   </div>
 

@@ -10,6 +10,13 @@ class Base(DeclarativeBase):
   pass
 
 
+from flask_wtf import FlaskForm
+from wtforms import fields, validators
+
+class MessageForm(FlaskForm):
+    message = fields.StringField('Message', validators=[validators.DataRequired(), validators.Length(min=3)])
+
+
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.secret_key = "change it when deploy"
@@ -32,6 +39,7 @@ def load_user(user_id):
 class User(db.Model):
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
     username: Mapped[str] = mapped_column(db.String, unique=True, nullable=False)
+    # password: Mapped[str] = mapped_column(db.String, nullable=False)
     email: Mapped[str] = mapped_column(db.String)
 
 class Group(db.Model):
@@ -48,7 +56,7 @@ with app.app_context():
     db.create_all()
 
 @app.route("/")
-@login_required
+# @login_required
 def index():
     messages = db.session.execute(db.select(Message)).scalars()
 
@@ -75,14 +83,21 @@ def me():
 
 
 @app.route("/write")
-@login_required
+# @login_required
 def write():
-    return render_template("write.html.j2")
+    form = MessageForm()
+    return render_template("write.html.j2", form=form)
 
 
 @app.route("/save", methods=["POST"])
-@login_required
+# @login_required
 def save():
+    # form validation
+
+    form = MessageForm()
+    if not form.validate_on_submit():
+        return redirect(url_for('write'))
+
     # create model
     message = Message()
     message.message = request.form.get('message', 'No message')
