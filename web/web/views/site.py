@@ -9,6 +9,6 @@ bp = Blueprint("site", __name__)
 @bp.route("/")
 @login_required
 def index():
-    messages = models.db.session.execute(models.db.select(models.Message)).scalars()
+    groups = models.db.session.execute(models.db.select(models.Group)).scalars()
 
-    return render_template("site/index.html.j2", messages=messages)
+    return render_template("site/index.html.j2", groups=groups)

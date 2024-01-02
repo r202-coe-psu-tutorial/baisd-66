@@ -8,29 +8,11 @@ from .. import models
 bp = Blueprint("posts", __name__, url_prefix="/posts")
 
 
-@bp.route("/write")
+@bp.route("/post_by_user/<user_id>")
 @login_required
-def write():
-    form = forms.MessageForm()
-    return render_template("posts/write.html.j2", form=form)
-
-
-@bp.route("/save", methods=["POST"])
-@login_required
-def save():
-    # form validation
-
-    form = forms.MessageForm()
-    if not form.validate_on_submit():
-        return redirect(url_for("post.write"))
-
-    # create model
-    message = models.Message()
-    message.message = request.form.get("message", "No message")
-    message.created_date = datetime.datetime.now()
-    message.ip_address = request.environ["REMOTE_ADDR"]
-    message.post_by_id = current_user.id
-    # save model
-    models.db.session.add(message)
-    models.db.session.commit()
-    return redirect(url_for("site.index"))
+def post_by(user_id):
+    user = models.User.query.filter_by(id=user_id).first()
+    messages = models.db.session.execute(
+        models.db.select(models.Message).filter_by(post_by_id=user.id)
+    ).scalars()
+    return render_template("posts/post_by.html.j2", messages=messages, user=user)

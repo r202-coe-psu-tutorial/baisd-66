@@ -1,0 +1,46 @@
+{% extends "base.html.j2" %}
+
+{% block content %}
+  <h1> {{ group.name }}</h1>
+  <div class="row border border-primary" style="padding:10px;">
+    <div class="col">
+      create by {{ group.created_by.username }} <br/>
+      create date {{ group.created_date }}
+    </div>
+    <div class="col text-end">
+      <a href="{{ url_for('groups.create_or_edit') }}" class="btn btn-primary">Create Group</a>
+    </div>
+  </div>
+  <div class="row" style="padding-top:1em;">
+    <h3>Write the message</h3>
+    <form method="POST" action="{{ url_for('groups.write', group_id=group.id) }}">
+      {{ form.hidden_tag() }}
+      <div class="mb-3">
+        {# <label for="message" class="form-label">Message</label>
+        <input type="text" name="message" class="form-control" id="message" aria-describedby="message-help"> #}
+        {{ form.message.label(class_="form-label") }}
+        {{ form.message(class_="form-control") }}
+        <div id="meaage-help" class="form-text">Write the story</div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+  </div>
+  <div class="row row-cols-3" style="padding-top:1em;">
+    {% for message in group.messages %}
+      <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ message.message }}</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-clock"></i> {{ message.created_date }}</h6>
+                <p class="card-text">ip: {{ message.ip_address }} user: <a href="{{ url_for('posts.post_by', user_id=group.created_by.id) }}">{{ message.post_by.username }}</a></p>
+            </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+
+
+{% endblock %}

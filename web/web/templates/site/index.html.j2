@@ -1,14 +1,21 @@
 {% extends "base.html.j2" %}
 
 {% block content %}
+  <div class="border border-primary" style="padding:5px;">
+    <a href="{{ url_for('groups.create_or_edit') }}" class="btn btn-primary">Create Group</a>
+  </div>
+  <div class="row row-cols-3" style="padding-top:10px;">
+    {% for group in groups %}
+      <div class="col">
+        <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><a href="{{ url_for('groups.view', group_id=group.id) }}">{{ group.name }}</a></h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-clock"></i> {{ group.created_date }}</h6>
+                <p class="card-text">ip: {{ group.ip_address }} user: <a href="{{ url_for('posts.post_by', user_id=group.created_by.id) }}">{{ group.created_by.username }}</a></p>
+            </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
 
-{% for message in messages %}
-<div class="card" style="width: 18rem;">
-    <div class="card-body">
-        <h5 class="card-title">{{ message.message }}</h5>
-        <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-clock"></i> {{ message.created_date }}</h6>
-        <p class="card-text">ip: {{ message.ip_address }} user: {{ message.post_by.username }}</p>
-    </div>
-</div>
-{% endfor %}
 {% endblock %}

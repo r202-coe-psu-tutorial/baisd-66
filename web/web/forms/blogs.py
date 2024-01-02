@@ -8,6 +8,12 @@ class MessageForm(FlaskForm):
     )
 
 
+class GroupForm(FlaskForm):
+    name = fields.StringField(
+        "Name", validators=[validators.DataRequired(), validators.Length(min=3)]
+    )
+
+
 class LoginForm(FlaskForm):
     username = fields.StringField(
         "Username", validators=[validators.DataRequired(), validators.Length(min=3)]
