@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Write the message</h1>
-<form method="POST" action="{{ url_for('save') }}">
+<form method="POST" action="{{ url_for('posts.save') }}">
   {{ form.hidden_tag() }}
   <div class="mb-3">
     {# <label for="message" class="form-label">Message</label>

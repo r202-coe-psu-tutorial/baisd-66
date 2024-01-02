@@ -31,14 +31,14 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Home</a>
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('site.index') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url_for('write') }}" class="nav-link active">Write</a>
+                        <a href="{{ url_for('posts.write') }}" class="nav-link active">Write</a>
                     </li>
                     {% if current_user.is_authenticated %}
                     <li class="nav-item">
-                        <a href="{{ url_for('logout') }}" class="nav-link active">Logout</a>
+                        <a href="{{ url_for('users.logout') }}" class="nav-link active">Logout</a>
                     </li>
                     {% endif %}
                 </ul>
