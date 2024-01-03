@@ -1,20 +1,25 @@
 {% extends "base.html.j2" %}
 
 {% block content %}
-  <h1>All message of {{ user.username }}</h1>
-  <div class="container text-center">
-    <div class="row row-cols-1">
-      {% for message in messages %}
-        <div class="col" style="padding-top: 1em; padding-buttom: 1em;">
-           <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{ message.message }}</h5>
-                <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-clock"></i> {{ message.created_date }}</h6>
-                <p class="card-text">ip: {{ message.ip_address }} user: <a href="{{ url_for('posts.post_by', user_id=message.post_by.id) }}">{{ message.post_by.username }}</a></p>
-            </div>
-          </div>
+<h1>All message of {{ user.username }}</h1>
+<div class="container text-center">
+  <div class="row row-cols-1">
+    {% for message in messages %}
+    <div class="col" style="padding-top: 1em; padding-buttom: 1em;">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ message.message }}</h5>
+          <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-clock"></i> {{ message.created_date }}</h6>
+          <p class="card-text">
+            ip: {{ message.ip_address }}
+            group: <a href="{{ url_for('groups.view', group_id=message.group.id) }}">{{ message.group.name }}</a>
+            user: <a href="{{ url_for('posts.post_by', user_id=message.post_by.id) }}">{{ message.post_by.username
+              }}</a>
+          </p>
         </div>
-    {% endfor %}
+      </div>
     </div>
+    {% endfor %}
   </div>
+</div>
 {% endblock %}
