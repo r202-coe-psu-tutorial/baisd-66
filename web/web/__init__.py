@@ -6,6 +6,12 @@ from . import acls
 
 app = Flask(__name__)
 
+@app.template_filter("screen_out_word")
+def screen_out_word_filter(word: str) -> str:
+    for screen in ['ในน้ำมีปลา', 'น้ำจิ้ม']:
+        word = word.replace(screen, '*'*len(screen))
+
+    return word
 
 with app.app_context():
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"

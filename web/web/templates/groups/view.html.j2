@@ -32,7 +32,7 @@
   <div class="col">
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">{{ message.message }}</h5>
+        <h5 class="card-title">{{ message.message|screen_out_word }}</h5>
         <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-clock"></i> {{ message.created_date }}</h6>
         <p class="card-text">ip: {{ message.ip_address }} user: <a
             href="{{ url_for('posts.post_by', user_id=message.post_by.id) }}">{{ message.post_by.username }}</a></p>
